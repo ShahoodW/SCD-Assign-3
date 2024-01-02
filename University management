@@ -1,0 +1,54 @@
+class Person:
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+
+    def get_name(self):
+        return self.name
+
+    def get_id(self):
+        return self.id
+
+
+class Student(Person):
+    def __init__(self, name, id):
+        super().__init__(name, id)
+        self.courses = []
+
+    def enroll_in_course(self, course):
+        self.courses.append(course)
+        print(f"{self.get_name()} enrolled in {course.get_course_name()}")
+
+    def get_gpa(self):
+        # Calculate GPA logic goes here
+        # This is a placeholder, you need to implement the actual GPA calculation
+        return 3.5
+
+
+class Professor(Person):
+    def grade_student(self, student, course, grade):
+        # Grading logic goes here
+        print(f"{self.get_name()} graded {student.get_name()} in {course.get_course_name()} with grade: {grade}")
+
+
+class Course:
+    def __init__(self, course_name, course_code):
+        self.course_name = course_name
+        self.course_code = course_code
+
+    def get_course_name(self):
+        return self.course_name
+
+    def get_course_code(self):
+        return self.course_code
+
+
+# Example usage:
+student1 = Student("John Doe", 1)
+professor1 = Professor("Dr. Smith", 101)
+course1 = Course("Introduction to Computer Science", "CS101")
+
+student1.enroll_in_course(course1)
+professor1.grade_student(student1, course1, 'A')
+
+print(f"{student1.get_name()}'s GPA: {student1.get_gpa()}")
