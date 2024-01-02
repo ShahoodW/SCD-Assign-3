@@ -1,0 +1,60 @@
+class User:
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+        self.posts = []
+        self.likes = set()
+
+    def create_post(self, content):
+        post = Post(content, self)
+        self.posts.append(post)
+        return post
+
+    def like_post(self, post):
+        post.add_like(self)
+        self.likes.add(post)
+
+    def view_posts(self):
+        for post in self.posts:
+            print(post)
+
+class Admin(User):
+    def __init__(self, username, email, password):
+        super().__init__(username, email, password)
+
+    def promote_user(self, user):
+        user.__class__ = Admin
+
+class Post:
+    def __init__(self, content, author):
+        self.content = content
+        self.author = author
+        self.likes = set()
+
+    def add_like(self, user):
+        self.likes.add(user)
+
+    def __str__(self):
+        return f"{self.author.username} said: {self.content} - Likes: {len(self.likes)}"
+
+
+# Example Usage:
+user1 = User("john_doe", "john@example.com", "password123")
+user2 = User("jane_doe", "jane@example.com", "password456")
+admin1 = Admin("admin_user", "admin@example.com", "admin_password")
+
+post1 = user1.create_post("Hello, World!")
+post2 = user2.create_post("Having a great day!")
+
+user1.like_post(post2)
+user2.like_post(post1)
+
+user1.view_posts()
+
+admin1.promote_user(user1)
+print(f"\n{user1.username} has been promoted to Admin!")
+
+# Now user1 has admin privileges
+user1.promote_user(user2)
+user2.view_posts()
